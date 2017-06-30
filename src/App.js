@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import {BrowserRouter, Route, Link, Switch}
+  from 'react-router-dom';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyForm from './myform';
 
@@ -10,6 +13,14 @@ import {red700} from 'material-ui/styles/colors';
 const theme = getMuiTheme({
   palette: {primary1Color: red700}
 });
+
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>Page not found: {location.pathname}</h3>
+  </div>
+)
+
+const Home = () => (<h2>Home</h2>)
 
 
 class App extends Component {
@@ -22,8 +33,24 @@ class App extends Component {
       //
       // </div>
       <MuiThemeProvider muiTheme={theme}>
-          <MyForm/>
+        <div>
+
+          <BrowserRouter>
+            <div>
+              <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/form">Form</Link></li>
+              </ul>
+              <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route path="/form" component={MyForm}/>
+                <Route component={NoMatch}/>
+              </Switch>
+            </div>
+          </BrowserRouter>
+        </div>
       </MuiThemeProvider>
+
     );
   }
 }
