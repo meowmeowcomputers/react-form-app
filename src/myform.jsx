@@ -8,6 +8,9 @@ import './myform.css'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import { addContact } from './actions';
+import { connect } from 'react-redux';
+
 class MyForm extends Component {
   constructor (props) {
     super(props);
@@ -33,6 +36,7 @@ class MyForm extends Component {
   handleSubmit (event) {
     console.log('submitted: ', this.state)
     event.preventDefault();
+    this.props.onSubmit(this.state.name, this.state);
   }
 
   render () {
@@ -60,9 +64,29 @@ class MyForm extends Component {
           </CardActions>
           </Card>
         </form>
+        {Object.keys(this.props.contacts).map((key) => {
+          return <div key={key}>
+            Key: {key}, Value: {this.props.contacts[key].name}
+          </div>;
+        })}
       </div>
     )
   }
 }
 
-export default MyForm
+function mapStateToProps (state) {
+  return {
+    contacts: state
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    onSubmit: function(id, data){
+      dispatch(addContact(id, data));
+    }
+  }
+}
+
+MyForm = connect(mapStateToProps, mapDispatchToProps)(MyForm)
+export default MyForm;

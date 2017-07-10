@@ -5,6 +5,9 @@ import './App.css';
 import {BrowserRouter, Route, Link, Switch}
   from 'react-router-dom';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyForm from './myform';
 
@@ -13,6 +16,7 @@ import {red700} from 'material-ui/styles/colors';
 const theme = getMuiTheme({
   palette: {primary1Color: red700}
 });
+
 
 const NoMatch = ({ location }) => (
   <div>
@@ -32,24 +36,26 @@ class App extends Component {
       //   </div>
       //
       // </div>
-      <MuiThemeProvider muiTheme={theme}>
-        <div>
+      <Provider store={store}>
+        <MuiThemeProvider muiTheme={theme}>
+          <div>
 
-          <BrowserRouter>
-            <div>
-              <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/form">Form</Link></li>
-              </ul>
-              <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route path="/form" component={MyForm}/>
-                <Route component={NoMatch}/>
-              </Switch>
-            </div>
-          </BrowserRouter>
-        </div>
-      </MuiThemeProvider>
+            <BrowserRouter>
+              <div>
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li><Link to="/form">Form</Link></li>
+                </ul>
+                <Switch>
+                  <Route exact path="/" component={Home}/>
+                  <Route path="/form" component={MyForm}/>
+                  <Route component={NoMatch}/>
+                </Switch>
+              </div>
+            </BrowserRouter>
+          </div>
+        </MuiThemeProvider>
+      </Provider>
 
     );
   }
